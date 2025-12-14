@@ -7,7 +7,6 @@ import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.viper.pojo.Content;
 import com.viper.utils.HtmlParseUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,8 +17,11 @@ import java.util.Map;
 @Service
 public class ContentService {
 
-    @Autowired
-    private ElasticsearchClient elasticsearchClient;
+    private final ElasticsearchClient elasticsearchClient;
+
+    public ContentService(ElasticsearchClient elasticsearchClient) {
+        this.elasticsearchClient = elasticsearchClient;
+    }
 
     public Boolean parseContent(Integer pageNo) throws Exception{
         if(pageNo == null || pageNo == 0 || pageNo > 10)

@@ -1,7 +1,6 @@
 package com.viper.controller;
 
 import com.viper.service.ContentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,8 +17,11 @@ import java.util.Map;
 @CrossOrigin(origins = "*")  // 允许所有来源，开发环境方便
 public class ContentController {
 
-    @Autowired
-    private ContentService contentService;
+    private final ContentService contentService;
+
+    public ContentController(ContentService contentService) {
+        this.contentService = contentService;
+    }
 
     @GetMapping("/parse/{pageNo}")
     public Boolean parse(@PathVariable("pageNo") Integer pageNo) throws Exception{
