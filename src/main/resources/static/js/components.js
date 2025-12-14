@@ -2,7 +2,7 @@ const HeaderComp = {
     template: `
     <div class="header">
       <h1>🎬 豆瓣Top250电影</h1>
-      <p>发现经典，品味电影</p>
+      <p>@ClearVIper3</p>
     </div>
   `
 }
