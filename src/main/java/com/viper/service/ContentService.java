@@ -37,8 +37,6 @@ public class ContentService {
             }
             b.timeout(t -> t.time("2m"));
 
-
-
             return b;
         });
 
