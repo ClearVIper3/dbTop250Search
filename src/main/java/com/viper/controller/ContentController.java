@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +23,32 @@ public class ContentController {
 
     public ContentController(ContentService contentService) {
         this.contentService = contentService;
+    }
+
+    @PostMapping("/quickstart")
+    public Map<String, Object> quickstart() {
+        Map<String, Object> result = new HashMap<>();
+        List<Integer> successPages = new ArrayList<>();
+        List<Integer> failPages = new ArrayList<>();
+
+        for (int i = 1; i <= 10; i++) {
+            try {
+                boolean ok = contentService.parseContent(i);
+                if (ok) {
+                    successPages.add(i);
+                } else {
+                    failPages.add(i);
+                }
+            } catch (Exception e) {
+                failPages.add(i);
+            }
+        }
+
+        result.put("success", successPages);
+        result.put("fail", failPages);
+        result.put("total", 10);
+
+        return result;
     }
 
     @GetMapping("/parse/{pageNo}")
