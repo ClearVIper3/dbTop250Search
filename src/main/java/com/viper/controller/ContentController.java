@@ -5,6 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.InputStream;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestController
+@Controller
 @CrossOrigin(origins = "*")  // 允许所有来源，开发环境方便
 public class ContentController {
 
@@ -25,8 +26,8 @@ public class ContentController {
         this.contentService = contentService;
     }
 
-    @PostMapping("/quickstart")
-    public Map<String, Object> quickstart() {
+    @GetMapping("/quickstart")
+    public String quickstart() {
         Map<String, Object> result = new HashMap<>();
         List<Integer> successPages = new ArrayList<>();
         List<Integer> failPages = new ArrayList<>();
@@ -48,14 +49,17 @@ public class ContentController {
         result.put("fail", failPages);
         result.put("total", 10);
 
-        return result;
+        System.out.println(result);
+        return "redirect:/index.html";
     }
 
+    @ResponseBody
     @GetMapping("/parse/{pageNo}")
     public Boolean parse(@PathVariable("pageNo") Integer pageNo) throws Exception{
         return contentService.parseContent(pageNo);
     }
 
+    @ResponseBody
     @GetMapping("/search/{pageNo}/{pageSize}")
     public List<Map<String,Object>> search(@PathVariable("pageNo") Integer pageNo,
                                            @PathVariable("pageSize") Integer pageSize) throws Exception{
@@ -65,6 +69,7 @@ public class ContentController {
     /**
      * 图片代理接口，用于绕过跨域和防盗链限制
      */
+    @ResponseBody
     @GetMapping("/image-proxy")
     public ResponseEntity<byte[]> imageProxy(@RequestParam("url") String imageUrl) {
         try {
